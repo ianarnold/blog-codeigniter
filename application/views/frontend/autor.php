@@ -26,17 +26,32 @@
             <?php foreach($autores as $autor) : ?>
 
                 <div class="col-md-4">
-                    <img class="img-responsive img-circle" src="http://placehold.it/200x200" alt="">
+                    <style>
+                        img {
+                            width: 200px;
+                            height: 200px;
+                        }
+                    </style>
+                    <?php 
+                    if($autor->img == 1) {
+                        $mostraImg = "assets/frontend/img/usuarios/".md5($autor->id).".jpg";
+                    } else {
+                        $mostraImg = "assets/frontend/img/semFoto.png";
+                    }
+                    ?>
+
+                    <img class="img-responsive img-circle" src="<?php echo base_url($mostraImg); ?>" alt="">
+                    
                 </div>
                 <div class="col-md-8 ">
                     <h2>
                         <?php echo $autor->nome ?>
-                   </h2> 
-                   <hr>
-                        <p><?php echo $autor->historico ?></p>
-                   <hr>
-               </div>
+                    </h2> 
+                    <hr>
+                    <p><?php echo $autor->historico ?></p>
+                    <hr>
+                </div>
 
-           <?php endforeach; ?>
+            <?php endforeach; ?>
 
-       </div>
+        </div>

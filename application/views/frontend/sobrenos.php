@@ -48,14 +48,27 @@
             </div>
             <br>
             <h1 class="page-header">
-             Nossos autores
-         </h1>
-         <div class="col-md-12 row">
+               Nossos autores
+           </h1>
+           <div class="col-md-12 row">
 
             <?php foreach($autores as $autor) : ?>
 
                 <div class="col-md-4 col-xs-6">
-                    <img class="img-responsive img-circle" src="http://placehold.it/200x200" alt="">
+                    <style>
+                        img {
+                            width: 210px;
+                        }
+                    </style>
+                    <?php 
+                    if($autor->img == 1) {
+                        $mostraImg = "assets/frontend/img/usuarios/".md5($autor->id).".jpg";
+                    } else {
+                        $mostraImg = "assets/frontend/img/semFoto.png";
+                    }
+                    ?>
+
+                    <img class="img-responsive img-circle" src="<?php echo base_url($mostraImg); ?>" alt="">
                     <h4 class="text-center">
                         <a href="<?php echo base_url('autor/'.$autor->id.'/'.limpar($autor->nome)) ?>">
                             <?php echo $autor->nome ?>

@@ -62,4 +62,52 @@ class Publicacoes_model extends CI_Model {
 		return $this->db->get()->result();
 	}
 
+	public function listar_publicacao()
+	{
+		$this->db->order_by('data', 'DESC');
+		return $this->db->get('postagens')->result();
+	}
+
+	public function listar_publicacoes($id)
+	{
+		$this->db->where('md5(id)',$id);
+		return $this->db->get('postagens')->result();
+	}
+
+	public function adicionar($titulo, $subtitulo, $conteudo, $datapub, $categoria, $userpub)
+	{
+		$dados['titulo'] = $titulo;
+		$dados['subtitulo'] = $subtitulo;
+		$dados['conteudo'] = $conteudo;
+		$dados['data'] = $datapub;
+		$dados['categoria'] = $categoria;
+		$dados['user'] = $userpub;
+		return $this->db->insert('postagens', $dados);
+	}
+
+	public function excluir($id)
+	{
+		$this->db->where('md5(id)', $id);
+		return $this->db->delete('postagens');
+	}
+
+	public function alterar($titulo, $subtitulo, $conteudo, $datapub, $categoria, $id)
+	{
+		$dados['titulo'] = $titulo;
+		$dados['subtitulo'] = $subtitulo;
+		$dados['conteudo'] = $conteudo;
+		$dados['data'] = $datapub;
+		$dados['categoria'] = $categoria;
+		$this->db->where('id', $id);
+		return $this->db->update('postagens', $dados);
+	}
+
+	public function alterar_img($id)
+	{
+		$dados['img'] = 1;
+		$this->db->where('md5(id)', $id);
+		return $this->db->update('postagens', $dados);
+	}
+
+
 }

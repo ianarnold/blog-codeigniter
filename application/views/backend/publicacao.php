@@ -7,53 +7,54 @@
     </div>
     <!-- /.row -->
     <div class="row">
-        <div class="col-lg-6">
+        <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <?php echo 'Adicionar novo '.$subtitulo ?>
+                    <?php echo 'Adicionar nova '.$subtitulo ?>
                 </div>
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-12">
                             <?php
                                 echo validation_errors('<div class="alert alert-danger">', '</div>');
-                                echo form_open('admin/usuarios/inserir');
+                                echo form_open('admin/publicacao/inserir');
                             ?>
-
                             <div class="form-group">
-                                <label>Nome do Usuário</label>
+                            <label id="select-categoria">Categoria</label>
+                            <select id="select-categoria" name="select-categoria" class="form-control">
+                                <?php  
+                                    foreach($categorias as $categoria):
+                                ?>
+                                <option value="<?php echo $categoria->id ?>"><?php echo $categoria->titulo ?></option>
+                                <?php 
+                                    endforeach;
+                                ?>
+                            </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Título</label>
                                 <input type="text" class="form-control" 
-                                placeholder="Digite o nome do usuário"
-                                id="txt-nome" name="txt-nome" value="<?php echo set_value('txt-nome') ?>">
+                                placeholder="Digite o titulo da publicação"
+                                id="txt-titulo" name="txt-titulo" value="<?php echo set_value('txt-titulo') ?>">
                             </div>
                             <div class="form-group">
-                                <label>Email do Usuário</label>
-                                <input type="email" class="form-control" 
-                                placeholder="Digite o email do usuário"
-                                id="txt-email" name="txt-email" value="<?php echo set_value('txt-email') ?>">
-                            </div>
-                            <div class="form-group">
-                                <label id="txt-historico">Histórico do Usuário</label>
-                                <textarea name="txt-historico" id="txt-historico" class="form-control" style="resize: vertical;">
-                                    <?php echo set_value('txt-historico') ?>
-                                </textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>User do Usuário</label>
+                                <label>Subtítulo</label>
                                 <input type="text" class="form-control" 
-                                placeholder="Digite o user do usuário"
-                                id="txt-user" name="txt-user" value="<?php echo set_value('txt-user') ?>">
+                                placeholder="Digite o subtitulo da publicação"
+                                id="txt-subtitulo" name="txt-subtitulo" value="<?php echo set_value('txt-subtitulo') ?>">
                             </div>
                             <div class="form-group">
-                                <label>Senha do Usuário</label>
-                                <input type="password" class="form-control" 
-                                    id="txt-senha" name="txt-senha">
+                                <label id="txt-historico">Conteúdo</label>
+<textarea name="txt-conteudo" id="txt-conteudo" class="form-control" style="resize: vertical;"><?php echo set_value('txt-conteudo') ?></textarea>
                             </div>
                             <div class="form-group">
-                                <label>Confirmar senha</label>
-                                <input type="password" class="form-control" 
-                                    id="txt-confir-senha" name="txt-confir-senha">
+                                <label>Data</label>
+                                <input type="datetime-local" class="form-control" 
+                                placeholder="Digite a data da publicação"
+                                id="txt-data" name="txt-data" value="<?php echo set_value('txt-data') ?>">
                             </div>
+                            <input type="hidden" name="txt-usuario" id="txt-usuario"
+                                   value="<?php echo $this->session->userdata('userLogado')->id; ?>">
 
                             <button type="submit" class="btn btn-default">Cadastrar</button>
                             <?php
@@ -69,7 +70,7 @@
         </div>
         <!-- /.col-lg-6 -->
 
-        <div class="col-lg-6">
+        <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <?php echo 'Alterar '.$subtitulo. ' existente' ?>
@@ -79,24 +80,26 @@
                         <div class="col-lg-12">
                             <style>
                                 img {
-                                    width: 60px;
+                                    width: 80px;
                                 }
                             </style>
                             <?php 
-                            $this->table->set_heading("Foto", "Nome do Usuário", "Alterar", "Excluir");
-                            foreach($usuarios as $usuario) {
-                                $nomeUser= $usuario->nome;
-                                if($usuario->img == 1) {
-                                    $fotoUser = img("assets/frontend/img/usuarios/".md5($usuario->id).".jpg");
+                            $this->table->set_heading("Foto", "Título", "Data", "Alterar", "Excluir");
+                            foreach($publicacoes as $publicacao) {
+                                $titulo = $publicacao->titulo;
+
+                                if($publicacao->img == 1) {
+                                    $fotoPub = img("assets/frontend/img/publicacao/".md5($publicacao->id).".jpg");
                                 } else {
-                                    $fotoUser = img("assets/frontend/img/semFoto.png");
+                                    $fotoPub = img("assets/frontend/img/semFoto.png");
                                 }
-                                $alterar= anchor(base_url('admin/usuarios/alterar/'.md5($usuario->id)), 
+                                $data = postadoem($publicacao->data);
+                                $alterar= anchor(base_url('admin/publicacao/alterar/'.md5($publicacao->id)), 
                                     '<i class="fa fa-refresh fa-fw"></i> Alterar');
-                                $excluir= anchor(base_url('admin/usuarios/excluir/'.md5($usuario->id)), 
+                                $excluir= anchor(base_url('admin/publicacao/excluir/'.md5($publicacao->id)), 
                                     '<i class="fa fa-remove fa-fw"></i> Excluir');
 
-                                $this->table->add_row($fotoUser, $nomeUser, $alterar, $excluir);
+                                $this->table->add_row($fotoPub, $titulo, $data, $alterar, $excluir);
                             }
                             $this->table->set_template(array(
                                 'table_open' => '<table class="table table-striped">'

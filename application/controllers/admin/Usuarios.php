@@ -102,7 +102,7 @@ class Usuarios extends CI_Controller {
 		$this->load->view('backend/template/html-footer');
 	}
 
-	public function salvar_alteracoes()
+	public function salvar_alteracoes($criptId, $userCon)
 	{
 		if(!$this->session->userdata('logado')) {
 			redirect(base_url('admin/login'));
@@ -110,21 +110,24 @@ class Usuarios extends CI_Controller {
 
 		$this->load->model('usuarios_model', 'modelusuarios');
 		$this->load->library('form_validation');
-		$this->form_validation->set_rules('txt-nome', 'Nome do Usuário',
-			'required|min_length[3]');
-		$this->form_validation->set_rules('txt-email', 'Email',
-			'required|valid_email|is_unique[usuario.email]');
-		$this->form_validation->set_rules('txt-historico', 'Histórico',
-			'required|min_length[20]');
-		$this->form_validation->set_rules('txt-user', 'User',
-			'required|min_length[3]|is_unique[usuario.user]');
-		$this->form_validation->set_rules('txt-senha', 'Senha',
-			'required|min_length[3]');
-		$this->form_validation->set_rules('txt-confir-senha', 'Confirmação de senha',
-			'required|matches[txt-senha]');
+		$this->form_validation->set_rules('txt-nome','Nome do Usuário', 'required|min_length[3]');
+		$this->form_validation->set_rules('txt-email','Email', 'required|valid_email');
+		$this->form_validation->set_rules('txt-historico','Histórico', 'required|min_length[20]');
+
+		// recuperamos o que esta no campo usuário
+		$user= $this->input->post('txt-user');
+
+		// verificamos se ele é diferente do que veio inicialmente do banco e que foi passado
+		// como parâmetro na URL.
+		// Caso seja diferente ele irá verificar se é único e caso seja igual ele não fara nada
+		if($userCom != $user){
+			$this->form_validation->set_rules('txt-user','User', 'required|min_length[3]|is_unique[usuario.user]');
+		}
+		$this->form_validation->set_rules('txt-senha','Senha', 'required|min_length[3]');
+		$this->form_validation->set_rules('txt-confir-senha','Confirmar Senha', 'required|matches[txt-senha]');
 
 		if($this->form_validation->run() == FALSE) {
-			$this->alterar();
+			$this->alterar($criptId);
 		} else {
 			$nome = $this->input->post('txt-nome');
 			$email = $this->input->post('txt-email');
@@ -136,6 +139,40 @@ class Usuarios extends CI_Controller {
 				redirect(base_url('admin/usuarios'));
 			} else {
 				echo "Houve um erro no sistema!";
+			}
+		}
+	}
+
+	public function nova_foto()
+	{
+		if(!$this->session->userdata('logado')) {
+			redirect(base_url('admin/login'));
+		}
+		$this->load->model('usuarios_model', 'modelusuarios');
+
+		$id = $this->input->post('id');
+		$config['upload_path'] = './assets/frontend/img/usuarios';
+		$config['allowed_types'] = 'jpg';
+		$config['file_name'] = $id.".jpg";
+		$config['overwrite'] = TRUE;
+		$this->load->library('upload', $config);
+
+		if(!$this->upload->do_upload()) {
+			echo $this->upload->display_errors();
+		} else {
+			$config2['source_image'] = './assets/frontend/img/usuarios/'.$id.'.jpg';
+			$config2['create_thumb'] = FALSE;
+			$config2['width'] = 200;
+			$config2['height'] = 200;
+			$this->load->library('image_lib', $config2);
+			if($this->image_lib->resize()) {
+				if($this->modelusuarios->alterar_img($id)) {
+					redirect (base_url('admin/usuarios/alterar/'.$id));
+				} else {
+					echo "Houve um erro no sistema!";
+				}
+			} else {
+				echo $this->image_lib->display_errors();
 			}
 		}
 	}

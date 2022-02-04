@@ -21,7 +21,7 @@
                         Categorias</a>
                     </li>
                     <li>
-                        <a href="<?php echo base_url('admin/postagem'); ?>"><i class="fa fa-edit fa-fw"></i> Postagens</a>
+                        <a href="<?php echo base_url('admin/publicacao'); ?>"><i class="fa fa-edit fa-fw"></i> Postagens</a>
                     </li>
                     <li>
                         <a href="<?php echo base_url('admin/usuarios'); ?>"><i class="fa fa-wrench fa-fw"></i> Usuários</a>
