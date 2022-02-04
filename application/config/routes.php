@@ -55,6 +55,7 @@ $route['translate_uri_dashes'] = FALSE;
 
 // Rota de categoria/id/nome
 $route['categoria/(:num)/(:any)'] = 'categorias/index/$1/$2';
+$route['categoria/(:num)/(:any)/(:num)'] = 'categorias/index/$1/$2/$3';
 
 // Rota de postagens/id/titulo_da_postagem
 $route['postagem/(:num)/(:any)'] = 'postagens/index/$1/$2';
@@ -64,4 +65,11 @@ $route['autor/(:num)/(:any)'] = 'sobrenos/autores/$1/$2';
 
 // Rota pra fazer login na área administrativa
 $route['admin/login'] = 'admin/usuarios/page_login';
+
+$route['admin/publicacao/(:num)'] = 'admin/publicacao/index/$1';
+
+$route['admin/categoria/(:num)'] = 'admin/categoria/index/$1';
+
+
+
 

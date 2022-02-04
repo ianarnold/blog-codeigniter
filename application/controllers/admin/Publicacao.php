@@ -18,12 +18,22 @@ class Publicacao extends CI_Controller {
 
 	}
 
-	public function index()
+	public function index($next = null, $posts_per_page = null)
 	{
 		$this->load->library('table');
+		$this->load->library('pagination');
+
+		$config['base_url'] = base_url('admin/publicacao');
+		$config['total_rows'] = $this->modelpublicacao->countPosts();
+		$posts_per_page = 5;
+		$config['per_page'] = $posts_per_page;
+
+		$this->pagination->initialize($config);
+		$dados['links_pagination'] = $this->pagination->create_links();
+
 
 		$dados['categorias'] = $this->categorias;
-		$dados['publicacoes'] = $this->modelpublicacao->listar_publicacao();
+		$dados['publicacoes'] = $this->modelpublicacao->listar_publicacao($next, $posts_per_page);
 		// Dados a serem enviado para o cabeçalho
 		$dados['titulo'] = 'Painel de controle';
 		$dados['subtitulo'] = 'Publicação';

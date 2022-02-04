@@ -33,4 +33,9 @@ class Home extends CI_Controller {
 		$this->load->view('frontend/template/html-footer');
 	}
 
+	public function teste()
+	{
+		echo "teste";
+	}
+
 }

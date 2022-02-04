@@ -16,18 +16,22 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <?php
-                                echo validation_errors('<div class="alert alert-danger">', '</div>');
-                                echo form_open('admin/categoria/inserir');
+                            if($publicado == 1){
+                                echo '<div class="alert alert-success">Categoria publicada com sucesso!</div>';
+                            }
+
+                            echo validation_errors('<div class="alert alert-danger">', '</div>');
+                            echo form_open('admin/categoria/inserir');
                             ?>
                             <div class="form-group">
                                 <label>Nome da categoria</label>
                                 <input type="text" class="form-control" 
-                                    placeholder="Digite o nome da categoria"
-                                    id="txt-categoria" name="txt-categoria">
+                                placeholder="Digite o nome da categoria"
+                                id="txt-categoria" name="txt-categoria">
                             </div>
                             <button type="submit" class="btn btn-default">Cadastrar categoria</button>
                             <?php
-                                echo form_close();
+                            echo form_close();
                             ?>
                         </div>
                     </div>
@@ -53,8 +57,30 @@
                                 $nomecat= $categoria->titulo;
                                 $alterar= anchor(base_url('admin/categoria/alterar/'.md5($categoria->id)), 
                                     '<i class="fa fa-refresh fa-fw"></i> Alterar');
-                                $excluir= anchor(base_url('admin/categoria/excluir/'.md5($categoria->id)), 
-                                    '<i class="fa fa-remove fa-fw"></i> Excluir');
+                                $excluir= '<button type="button" class="btn btn-link" data-toggle="modal" data-target=".excluir-modal-'.$categoria->id.'"><i class="fa fa-remove fa-fw"></i> Excluir</button>';
+
+                                echo $modal= ' <div class="modal fade excluir-modal-'.$categoria->id.'" tabindex="-1" role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog modal-sm">
+                                    <div class="modal-content">
+
+                                    <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                                    </button>
+                                    <h4 class="modal-title" id="myModalLabel2">Exclusão de Categoria</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                    <h4>Deseja Excluir a Categoria '.$categoria->titulo.'?</h4>
+                                    <p>Após Excluida a categoria <b>'.$categoria->titulo.'</b> não ficara mais disponível no Sistema.</p>
+                                    <p>Todos os itens relacionados a categoria <b>'.$categoria->titulo.'</b> serão afetados e não aparecerão no site até que sejam editados.</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                    <a type="button" class="btn btn-primary" href="'.base_url("admin/categoria/excluir/".md5($categoria->id)).'">Excluir</a>
+                                    </div>
+
+                                    </div>
+                                    </div>
+                                    </div>';
 
                                 $this->table->add_row($nomecat, $alterar, $excluir);
                             }

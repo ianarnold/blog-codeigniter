@@ -47,6 +47,8 @@
 
                 <hr>
 
-            <?php endforeach; ?>
+            <?php endforeach;
+                echo "<div class='pagination'>".$links_pagination."</div>";
+             ?>
 
         </div>

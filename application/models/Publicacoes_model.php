@@ -29,7 +29,7 @@ class Publicacoes_model extends CI_Model {
 		return $this->db->get()->result();
 	}
 
-	public function categoria_pub($id) 
+	public function categoria_pub($id, $next, $posts_per_page) 
 	{
 		$this->db->select('usuario.id as idautor, 
 			usuario.nome, postagens.id, postagens.titulo, 
@@ -39,6 +39,13 @@ class Publicacoes_model extends CI_Model {
 		$this->db->join('usuario', 'usuario.id = postagens.user');
 		$this->db->where('postagens.categoria ='.$id );
 		$this->db->order_by('postagens.data', 'DESC');
+		if($next && $posts_per_page) {
+			$this->db->limit($posts_per_page, $next);
+		} else {
+
+			$this->db->limit(2);
+		}
+
 		return $this->db->get()->result();
 	}
 
@@ -62,9 +69,17 @@ class Publicacoes_model extends CI_Model {
 		return $this->db->get()->result();
 	}
 
-	public function listar_publicacao()
+	public function listar_publicacao($next = null, $posts_per_page = null)
 	{
 		$this->db->order_by('data', 'DESC');
+
+		if($next && $posts_per_page) {
+			$this->db->limit($posts_per_page, $next);
+		} else {
+
+			$this->db->limit(5);
+		}
+
 		return $this->db->get('postagens')->result();
 	}
 
@@ -107,6 +122,17 @@ class Publicacoes_model extends CI_Model {
 		$dados['img'] = 1;
 		$this->db->where('md5(id)', $id);
 		return $this->db->update('postagens', $dados);
+	}
+
+	public function countPosts()
+	{
+		return $this->db->count_all('postagens');
+	}
+
+	public function countPostsCat($id)
+	{	
+		$this->db->where('categoria ='.$id);
+		return $this->db->count_all_results('postagens');
 	}
 
 

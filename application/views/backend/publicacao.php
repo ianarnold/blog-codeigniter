@@ -84,8 +84,8 @@
                                 }
                             </style>
                             <?php 
-                            $this->table->set_heading("Foto", "Título", "Data", "Alterar", "Excluir");
-                            foreach($publicacoes as $publicacao) {
+                                $this->table->set_heading("Foto", "Título", "Data", "Alterar", "Excluir");
+                                foreach($publicacoes as $publicacao) {
                                 $titulo = $publicacao->titulo;
 
                                 if($publicacao->img == 1) {
@@ -96,15 +96,38 @@
                                 $data = postadoem($publicacao->data);
                                 $alterar= anchor(base_url('admin/publicacao/alterar/'.md5($publicacao->id)), 
                                     '<i class="fa fa-refresh fa-fw"></i> Alterar');
-                                $excluir= anchor(base_url('admin/publicacao/excluir/'.md5($publicacao->id)), 
-                                    '<i class="fa fa-remove fa-fw"></i> Excluir');
+                                $excluir= '<button type="button" class="btn btn-link" data-toggle="modal" data-target=".excluir-modal-'.$publicacao->id.'"><i class="fa fa-remove fa-fw"></i> Excluir</button>';
+
+echo $modal= ' <div class="modal fade excluir-modal-'.$publicacao->id.'" tabindex="-1" role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog modal-sm">
+                                        <div class="modal-content">
+
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                                                </button>
+                                                <h4 class="modal-title" id="myModalLabel2">Exclusão de publicacao</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <h4>Deseja Excluir a publicacao '.$publicacao->titulo.'?</h4>
+                                                <p>Após Excluida a publicacao <b>'.$publicacao->titulo.'</b> não ficara mais disponível no Sistema.</p>
+                                                <p>Todos os itens relacionados a publicacao <b>'.$publicacao->titulo.'</b> serão afetados e não aparecerão no site até que sejam editados.</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                                <a type="button" class="btn btn-primary" href="'.base_url("admin/publicacao/excluir/".md5($publicacao->id)).'">Excluir</a>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>';
 
                                 $this->table->add_row($fotoPub, $titulo, $data, $alterar, $excluir);
                             }
                             $this->table->set_template(array(
                                 'table_open' => '<table class="table table-striped">'
                             ));
-                            echo $this->table->generate();
+                                echo $this->table->generate();
+                                echo "<div class='pagination'>".$links_pagination."</div>";
                             ?>
                         </div>
                     </div>

@@ -17,7 +17,7 @@ class Categoria extends CI_Controller {
 
 	}
 
-	public function index()
+	public function index($publicado = null)
 	{
 		$this->load->library('table');
 
@@ -25,6 +25,7 @@ class Categoria extends CI_Controller {
 		// Dados a serem enviado para o cabeçalho
 		$dados['titulo'] = 'Painel de controle';
 		$dados['subtitulo'] = 'Categoria';
+		$dados['publicado'] = $publicado;
 
 		$this->load->view('backend/template/html-header', $dados);
 		$this->load->view('backend/template/template');
@@ -42,7 +43,7 @@ class Categoria extends CI_Controller {
 		} else {
 			$titulo = $this->input->post('txt-categoria');
 			if($this->modelcategorias->adicionar($titulo)) {
-				redirect(base_url('admin/categoria'));
+				redirect(base_url('admin/categoria/1'));
 			} else {
 				echo "Houve um erro no sistema!";
 			}

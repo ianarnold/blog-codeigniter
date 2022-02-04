@@ -36,6 +36,9 @@
             <li>
                 <a href="#">Contato</a>
             </li>
+            <li>
+                <a href="<?php echo base_url('admin/login'); ?>">Área administrativa</a>
+            </li>
         </ul>
     </div>
     <!-- /.navbar-collapse -->
