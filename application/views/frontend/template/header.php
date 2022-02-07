@@ -34,7 +34,7 @@
                 <a href="<?php echo base_url('sobrenos'); ?>">Sobre Nós</a>
             </li>
             <li>
-                <a href="#">Contato</a>
+                <a href="<?php echo base_url('contato'); ?>">Contato</a>
             </li>
             <li>
                 <a href="<?php echo base_url('admin/login'); ?>">Área administrativa</a>

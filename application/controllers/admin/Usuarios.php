@@ -120,7 +120,7 @@ class Usuarios extends CI_Controller {
 		// verificamos se ele é diferente do que veio inicialmente do banco e que foi passado
 		// como parâmetro na URL.
 		// Caso seja diferente ele irá verificar se é único e caso seja igual ele não fara nada
-		if($userCom != $user){
+		if($userCon != $user){
 			$this->form_validation->set_rules('txt-user','User', 'required|min_length[3]|is_unique[usuario.user]');
 		}
 		$this->form_validation->set_rules('txt-senha','Senha', 'required|min_length[3]');
@@ -224,6 +224,7 @@ class Usuarios extends CI_Controller {
 		$this->session->set_userdata($dadosSessao);
 		redirect(base_url('admin/login'));	
 	}
+
 
 
 }

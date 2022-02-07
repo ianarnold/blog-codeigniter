@@ -27,6 +27,9 @@
                         <a href="<?php echo base_url('admin/usuarios'); ?>"><i class="fa fa-wrench fa-fw"></i> Usuários</a>
                     </li>
                     <li>
+                        <a href="<?php echo base_url(''); ?>"><i class="fa fa-sign-out fa-fw"></i> Voltar pro Blog</a>
+                    </li>
+                    <li>
                         <a href="<?php echo base_url('admin/usuarios/logout'); ?>"><i class="fa fa-sign-out fa-fw"></i> Sair do Sistema</a>
                     </li>
                 </ul>
